@@ -557,9 +557,9 @@ img { display: block; max-width: 100%; }
 
 <script>
 // Precios de Luly Salón, pasados del Word «PELUQUERíA presios» que mandó Gaby (27 oct 2026).
-// p: precio en USD (número), o un rango [min, max]; porOnza: el precio es por onza; nota: texto en lugar de precio.
+// p: precio en USD (número), o un rango [min, max] (o: true = uno u otro precio, se lee «8 o 10»); porOnza: el precio es por onza; nota: texto en lugar de precio.
 // extra: grupo de complementos por unidad; no cuenta para el «desde» de la familia.
-// Fuera de la web (uso interno, pendiente de confirmar con Gaby): las líneas «MO …», Redecilla,
+// Fuera de la web (uso interno, pendiente de confirmar con Gaby): las líneas «MO …» (salvo MO de tinte de raíz, pedida por el cliente el 5 nov 2026), Redecilla,
 // Protector térmico - Crema peinar, Silicona Sp colores y Chancletas.
 window.LULY_PRECIOS = [
   {
@@ -584,12 +584,13 @@ window.LULY_PRECIOS = [
       ] },
       { nombre: 'Color', items: [
         { n: 'Tinte de raíz (1 onza)', p: 8 },
-        { n: 'Tinte completo, pelo corto (1 a 1.3 oz)', p: [8, 10] },
-        { n: 'Tinte completo, corto a mandíbula (2 oz)', p: [10, 12] },
-        { n: 'Tinte completo, hombros (3 oz)', p: [12, 14] },
-        { n: 'Tinte completo, media espalda (4 oz)', p: [14, 16] },
-        { n: 'Tinte completo, encima de glúteos (5 oz)', p: [16, 21] },
-        { n: 'Tinte completo, debajo de glúteos (6 oz)', p: [21, 24] },
+        { n: 'Mano de obra (MO), tinte de raíz', p: 4 },
+        { n: 'Tinte completo, pelo corto', p: [8, 10], o: true },
+        { n: 'Tinte completo, corto a mandíbula', p: [10, 12], o: true },
+        { n: 'Tinte completo, hombros', p: [12, 14], o: true },
+        { n: 'Tinte completo, media espalda', p: [14, 16], o: true },
+        { n: 'Tinte completo, encima de glúteos', p: [16, 21], o: true },
+        { n: 'Tinte completo, debajo de glúteos', p: [21, 24], o: true },
         { n: 'Iluminaciones', p: 8, porOnza: true },
         { n: 'Balayage', p: 12, porOnza: true },
         { n: 'Balayage con tinte', nota: 'Doble del tinte' },
@@ -863,7 +864,7 @@ window.LULY_PRECIOS = [
   const num = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(2));
   const precio = (it) => {
     if (it.nota) return it.nota;
-    const base = Array.isArray(it.p) ? `${num(it.p[0])} a ${num(it.p[1])}` : num(it.p);
+    const base = Array.isArray(it.p) ? `${num(it.p[0])} ${it.o ? 'o' : 'a'} ${num(it.p[1])}` : num(it.p);
     return `${base} USD`;
   };
   const minimo = (f) => Math.min(...f.grupos.filter((g) => !g.extra).flatMap((g) => g.items).filter((i) => !i.nota).map((i) => (Array.isArray(i.p) ? i.p[0] : i.p)));
